@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<ArrayOfPin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Pin>
+    <Number>1</Number>
+    <Name>D3</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>OUTPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>2</Number>
+    <Name>D4</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>OUTPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>3</Number>
+    <Name>D5</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>OUTPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>4</Number>
+    <Name>D6</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>OUTPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>5</Number>
+    <Name>D7</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>OUTPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>6</Number>
+    <Name>ERP</Name>
+    <WorkState>1</WorkState>
+    <NoWorkState>1</NoWorkState>
+    <Type>SPEC</Type>
+  </Pin>
+  <Pin>
+    <Number>7</Number>
+    <Name>CS</Name>
+    <WorkState>0</WorkState>
+    <NoWorkState>0</NoWorkState>
+    <Type>SPEC</Type>
+  </Pin>
+  <Pin>
+    <Number>8</Number>
+    <Name>EO</Name>
+    <WorkState>1</WorkState>
+    <NoWorkState>1</NoWorkState>
+    <Type>SPEC</Type>
+  </Pin>
+  <Pin>
+    <Number>9</Number>
+    <Name>A10</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>10</Number>
+    <Name>A9</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>11</Number>
+    <Name>A8</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>12</Number>
+    <Name>VCC</Name>
+    <WorkState>VCC</WorkState>
+    <NoWorkState>VCC</NoWorkState>
+    <Type>VCC</Type>
+  </Pin>
+  <Pin>
+    <Number>13</Number>
+    <Name>A7</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>14</Number>
+    <Name>A6</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>15</Number>
+    <Name>A5</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>16</Number>
+    <Name>A4</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>17</Number>
+    <Name>A3</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>18</Number>
+    <Name>A2</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>19</Number>
+    <Name>A1</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>20</Number>
+    <Name>A0</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>INPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>21</Number>
+    <Name>D0</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>OUTPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>22</Number>
+    <Name>D1</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>OUTPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>23</Number>
+    <Name>D2</Name>
+    <WorkState />
+    <NoWorkState />
+    <Type>OUTPUT</Type>
+  </Pin>
+  <Pin>
+    <Number>24</Number>
+    <Name>GND</Name>
+    <WorkState>GND</WorkState>
+    <NoWorkState>GND</NoWorkState>
+    <Type>GND</Type>
+  </Pin>
+</ArrayOfPin>

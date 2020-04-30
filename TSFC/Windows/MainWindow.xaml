@@ -1,0 +1,145 @@
+﻿<Window x:Class="TSFC.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TSFC" 
+        mc:Ignorable="d"
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        Title="TSFC" Height="650" Width="800" WindowState="Maximized">
+    <Window.Resources>
+        <Style TargetType="Button" >
+            <Setter Property="Control.Width" Value="120" />
+            <Setter Property="Control.Height" Value="30" />
+            <Setter Property="Control.HorizontalAlignment" Value="Center" />
+            <Setter Property="Control.FontSize" Value="12" />
+            <Setter Property="Control.Margin" Value="5" />
+            <Setter Property="Control.Padding" Value="3" />
+        </Style>
+        <Style TargetType="TextBlock" >
+            <Setter Property="Control.Height" Value="20" />
+            <Setter Property="Control.HorizontalAlignment" Value="Center" />
+            <Setter Property="Control.FontSize" Value="12" />
+            <Setter Property="Control.Margin" Value="5" />
+        </Style>
+        <Style TargetType="TextBox" >
+            <Setter Property="Control.MinWidth" Value="30" />
+            <Setter Property="Control.Height" Value="20" />
+            <Setter Property="Control.HorizontalAlignment" Value="Center" />
+            <Setter Property="Control.FontSize" Value="12" />
+            <Setter Property="Control.Margin" Value="5" />
+        </Style>
+    </Window.Resources>
+    <DockPanel LastChildFill="True">
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Таблица истинности" Command="{Binding OpenLogicTableWindow_Button}" />
+        </ToolBar>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Исходные данные" >
+                        <StackPanel>
+                            <WrapPanel>
+                                <Button Content="Открыть" Command="{Binding OpenChip_Button}"/>
+                                <Button Content="Сохранить" Command="{Binding SaveChip_Button}" />
+                            </WrapPanel>
+                            <WrapPanel>
+                                <TextBlock Text="Количество пинов микросхемы" />
+                                <TextBox Text="{Binding AmountPins}"/>
+                                <Button Content="OK" Command="{Binding AmountPinsOk_Button}" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Инфо" Grid.Row="1" >
+                        <UniformGrid>
+                            <TextBlock Text="VCC - питание" />
+                            <TextBlock Text="GND - земля" />
+                            <TextBlock Text="A - вход" />
+                            <TextBlock Text="D - выход" />
+                        </UniformGrid>
+                    </GroupBox>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="1.5*" />
+                        </Grid.ColumnDefinitions>
+                        <WrapPanel>
+                            <ItemsControl ItemsSource="{Binding LeftSideChip}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <TextBlock Text="{Binding Number}" Width="20" TextAlignment="Right"  />
+                                            <TextBox Text="{Binding Name}" />
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <ItemsControl ItemsSource="{Binding RightSideChip}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <TextBox Text="{Binding Name}" />
+                                            <TextBlock Text="{Binding Number}" Width="20"/>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </WrapPanel>
+                        <DataGrid Grid.Column="1" AutoGenerateColumns="False" ItemsSource="{Binding SpecPins}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Пин" Binding="{Binding Name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Рабочее сост." Binding="{Binding WorkState}"/>
+                                <DataGridTextColumn Header="Не рабочее сост." Binding="{Binding NoWorkState}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+
+                    <Button Grid.Row="3" Content="Проверить" Command="{Binding CheckPins_Button}" />
+
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <WrapPanel>
+                            <Button Content="Выбрать бинарник" Command="{Binding ChooseBinaryFile_Button}" />
+                            <TextBlock Text="{Binding PathBinaryFile}" />
+                        </WrapPanel>
+                        <Button Content="Сгенерировать" Command="{Binding GenerateCode_Button}" HorizontalAlignment="Left" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1">
+                        <Button Content="Сохранить" Command="{Binding SaveTestSequenceInFile_Button}" />
+                    </StackPanel>
+
+                    <TextBox Grid.Row="2" Text="{Binding TestSequence, Mode=OneWay}" 
+                         TextWrapping="Wrap" Height="Auto" Width="Auto" HorizontalAlignment="Stretch" 
+                         VerticalScrollBarVisibility="Auto" MaxHeight="500"/>
+
+                </Grid>
+
+
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
