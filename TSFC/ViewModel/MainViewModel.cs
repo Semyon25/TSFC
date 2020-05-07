@@ -47,16 +47,7 @@ namespace TSFC.ViewModel
             }
         }
 
-        public List<Pin> SpecPins
-        {
-            get
-            {
-                List<Pin> list = new List<Pin>();
-                if (model.Pins != null && model.Pins.Count > 0)
-                    list = model.Pins.Where(p => p.Type == Pin.TypePin.SPEC).ToList();
-                return list;
-            }
-        }
+        public DataTable SpecPins { get; set; }
 
         public string PathBinaryFile
         {
@@ -69,6 +60,7 @@ namespace TSFC.ViewModel
         public bool IsGenerateAll { get; set; } = true;
         public int AmountAddresses { get; set; }
 
+        public int AmountVectorStates { get; set; } = 1;
 
 
         public MainViewModel()
@@ -82,7 +74,45 @@ namespace TSFC.ViewModel
             SaveChip_Button = new RelayCommand(SaveChip);
             SaveTestSequenceInFile_Button = new RelayCommand(SaveTestSequenceInFile);
             OpenLogicTableWindow_Button = new RelayCommand(OpenLogicTableWindow);
+            Ready_Button = new RelayCommand(Ready);
             RaisePropertyChanged(nameof(LogicTable));
+        }
+
+        private void Ready()
+        {
+            List<string> inputPin = new List<string>();
+            List<string> outputPin = new List<string>();
+            List<List<string>> specPins = new List<List<string>>();
+
+            for (int i = 3; i < SpecPins.Columns.Count; i++)
+            {
+                specPins.Add(new List<string>());
+            }
+
+            for (int i = 0; i<SpecPins.Rows.Count; ++i)
+            {
+                var items = SpecPins.Rows[i].ItemArray;
+                inputPin.Add((string)items[1]);
+                outputPin.Add((string)items[2]);
+                for (int j = 3; j < items.Count(); j++)
+                {
+                    specPins[j - 3].Add((string)items[j]);
+                }
+            }
+            
+            foreach (var pin in model.Pins.Where(p=>p.Type == Pin.TypePin.INPUT).ToList())
+            {
+                pin.States = inputPin;
+            }
+            foreach (var pin in model.Pins.Where(p => p.Type == Pin.TypePin.OUTPUT).ToList())
+            {
+                pin.States = outputPin;
+            }
+            for (int i = 3; i < SpecPins.Columns.Count; i++)
+            {
+                string name = SpecPins.Columns[i].ColumnName;
+                model.Pins.Where(p => p.Name == name).First().States = specPins[i-3];
+            }
         }
 
         private void OpenLogicTableWindow()
@@ -119,7 +149,10 @@ namespace TSFC.ViewModel
                 AmountPins = model.AmountPins;
                 RaisePropertyChanged(nameof(LeftSideChip));
                 RaisePropertyChanged(nameof(RightSideChip));
+                SpecPins = ConvertPinsToDataTable(model.Pins);
                 RaisePropertyChanged(nameof(SpecPins));
+                AmountVectorStates = Pin.AmountStates;
+                RaisePropertyChanged(nameof(AmountVectorStates));
             }
         }
 
@@ -177,6 +210,8 @@ namespace TSFC.ViewModel
             try
             {
                 model.CheckChip();
+                model.SetAmountVectorStates(AmountVectorStates);
+                SpecPins = ConvertPinsToDataTable(model.Pins);
                 RaisePropertyChanged(nameof(SpecPins));
             }
             catch (Exception ex)
@@ -200,6 +235,40 @@ namespace TSFC.ViewModel
             }
         }
 
+        DataTable ConvertPinsToDataTable(List<Pin> pins)
+        {
+            DataTable data = new DataTable();
+
+            var col = data.Columns.Add("¹");
+            col.ReadOnly = true;
+            data.Columns.Add("A");
+            data.Columns.Add("D");
+            var specPinsName = pins.Where(p => p.Type == Pin.TypePin.SPEC).Select(p => p.Name).ToList();
+            foreach (var p in specPinsName)
+            {
+                data.Columns.Add(p);
+            }
+
+            var inputPin = pins.Where(p => p.Type == Pin.TypePin.INPUT).Select(p=>p.States).FirstOrDefault();
+            var outputPin = pins.Where(p => p.Type == Pin.TypePin.OUTPUT).Select(p => p.States).FirstOrDefault();
+            var specPins = pins.Where(p => p.Type == Pin.TypePin.SPEC).Select(p => p.States).ToList();
+
+            for (int i = 0; i < Pin.AmountStates; i++)
+            {
+                DataRow row = data.NewRow();
+                row[0] = (i + 1).ToString();
+                row[1] = inputPin[i];
+                row[2] = outputPin[i];
+                for (int j = 0; j < specPins.Count; j++)
+                {
+                    row[3 + j] = specPins[j][i];
+                }
+                data.Rows.Add(row);
+            }
+
+            return data;
+        }
+
 
         #region ICommand
         public ICommand AmountPinsOk_Button { get; private set; }
@@ -210,6 +279,7 @@ namespace TSFC.ViewModel
         public ICommand SaveChip_Button { get; private set; }
         public ICommand SaveTestSequenceInFile_Button { get; private set; }
         public ICommand OpenLogicTableWindow_Button { get; private set; }
+        public ICommand Ready_Button { get; private set; }
 
         #endregion
 

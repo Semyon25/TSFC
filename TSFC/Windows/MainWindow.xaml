@@ -71,20 +71,34 @@
                     </GroupBox>
 
                     <GroupBox Header="Инфо" Grid.Row="1" >
-                        <UniformGrid>
-                            <TextBlock Text="VCC - питание" />
-                            <TextBlock Text="GND - земля" />
-                            <TextBlock Text="A - вход" />
-                            <TextBlock Text="D - выход" />
-                        </UniformGrid>
+                        <WrapPanel>
+                            <UniformGrid>
+                                <TextBlock Text="VCC - питание" />
+                                <TextBlock Text="GND - земля" />
+                                <TextBlock Text="A - вход" />
+                                <TextBlock Text="D - выход" />
+                            </UniformGrid>
+                            <UniformGrid Columns="1">
+                                <TextBlock Text="Состояние входов - 0, 1, Z, S" />
+                                <TextBlock Text="Состояние выходов - L, H, X, S" />
+                            </UniformGrid>
+                        </WrapPanel>
                     </GroupBox>
 
-                    <Grid Grid.Row="2">
+                    <WrapPanel Grid.Row="2">
+                        <TextBlock Text="Количество векторов" />
+                        <TextBox Text="{Binding AmountVectorStates}"/>
+                        <!--<Button Content="OK" Command="{Binding AmountVectorStatesOk_Button}"
+                                        Width="70"/>-->
+                    </WrapPanel>
+
+                    <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="1.5*" />
                         </Grid.ColumnDefinitions>
-                        <WrapPanel>
+                        <StackPanel>
+                            <WrapPanel>
                             <ItemsControl ItemsSource="{Binding LeftSideChip}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -106,16 +120,17 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </WrapPanel>
-                        <DataGrid Grid.Column="1" AutoGenerateColumns="False" ItemsSource="{Binding SpecPins}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Пин" Binding="{Binding Name}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Рабочее сост." Binding="{Binding WorkState}"/>
-                                <DataGridTextColumn Header="Не рабочее сост." Binding="{Binding NoWorkState}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                            <Button Content="Проверить" Command="{Binding CheckPins_Button}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <DataGrid ItemsSource="{Binding SpecPins}">
+                            </DataGrid>
+                            <Button Content="Готово" Command="{Binding Ready_Button}" />
+                        </StackPanel>
                     </Grid>
 
-                    <Button Grid.Row="3" Content="Проверить" Command="{Binding CheckPins_Button}" />
+                    
 
                 </Grid>
 

@@ -50,6 +50,16 @@ namespace TSFC.Model
             {
                 throw new Exception("Проверьте пины: " + string.Join(" ", list));
             }
+            var n = Pins.Where(p => p.Type == Pin.TypePin.INPUT).Count();
+            if (n == 0)
+            {
+                throw new Exception("Нет ни одного входного пина");
+            }
+            n = Pins.Where(p => p.Type == Pin.TypePin.OUTPUT).Count();
+            if (n == 0)
+            {
+                throw new Exception("Нет ни одного выходного пина");
+            }
         }
 
         public void LoadBinaryFile(string path)
@@ -87,51 +97,49 @@ namespace TSFC.Model
 
             for (int i = 0; i < amountAddresses; i++)
             {
-                string code = startString;
-                foreach (var pin in Pins)
+                for (int state = 0; state < Pin.AmountStates; ++state)
                 {
-                    if (pin.Type == Pin.TypePin.VCC || pin.Type == Pin.TypePin.GND || pin.Type == Pin.TypePin.SPEC)
+                    string code = startString;
+                    foreach (var pin in Pins)
                     {
-                        code += pin.WorkState;
-                    }
-                    else if (pin.Type == Pin.TypePin.INPUT)
-                    {
-                        int num = pin.ReturnNumberInputOutputPin();
-                        code += Table.Lines[i].Inputs[num];
-                    }
-                    else if (pin.Type == Pin.TypePin.OUTPUT)
-                    {
-                        int num = pin.ReturnNumberInputOutputPin();
-                        code += Table.Lines[i].Outputs[num];
-                    }
+                        if (pin.Type == Pin.TypePin.VCC || pin.Type == Pin.TypePin.GND)
+                        {
+                            code += pin.WorkState;
+                        }
+                        else if (pin.Type == Pin.TypePin.SPEC)
+                        {
+                            code += pin.States[state];
+                        }
+                        else if (pin.Type == Pin.TypePin.INPUT)
+                        {
+                            if (pin.States[state] == "1" || pin.States[state] == "0" || pin.States[state] == "Z")
+                            {
+                                code += pin.States[state];
+                            }
+                            else 
+                            {
+                                int num = pin.ReturnNumberInputOutputPin();
+                                code += Table.Lines[i].Inputs[num];
+                            }
+                        }
+                        else if (pin.Type == Pin.TypePin.OUTPUT)
+                        {
+                            if (pin.States[state] == "H" || pin.States[state] == "L" || pin.States[state] == "X")
+                            {
+                                code += pin.States[state];
+                            }
+                            else
+                            {
+                                int num = pin.ReturnNumberInputOutputPin();
+                                code += Table.Lines[i].Outputs[num];
+                            }
+                        }
 
-                    code += devider;
+                        code += devider;
+                    }
+                    codes.Add(code);
+
                 }
-                codes.Add(code);
-
-                if (!isNoWorkingStateAvailable) { continue; }
-
-                code = startString;
-                foreach (var pin in Pins)
-                {
-                    if (pin.Type == Pin.TypePin.VCC || pin.Type == Pin.TypePin.GND || pin.Type == Pin.TypePin.SPEC)
-                    {
-                        code += pin.NoWorkState;
-                    }
-                    else if (pin.Type == Pin.TypePin.INPUT)
-                    {
-                        int num = pin.ReturnNumberInputOutputPin();
-                        code += Table.Lines[i].Inputs[num];
-                    }
-                    else if (pin.Type == Pin.TypePin.OUTPUT)
-                    {
-                        int num = pin.ReturnNumberInputOutputPin();
-                        code += Table.Lines[i].Outputs[num];
-                    }
-
-                    code += devider;
-                }
-                codes.Add(code);
             }
 
             string result = string.Join("\n", codes);
@@ -146,6 +154,7 @@ namespace TSFC.Model
             {
                 Pins = (List<Pin>)serializer.Deserialize(fs);
                 AmountPins = Pins.Count;
+                Pin.AmountStates = Pins.Where(p => p.Type == Pin.TypePin.INPUT).First().States.Count;
             }
         }
 
@@ -156,6 +165,14 @@ namespace TSFC.Model
             {
 
                 serializer.Serialize(fs, Pins);
+            }
+        }
+
+        public void SetAmountVectorStates(int amount)
+        {
+            foreach (var pin in Pins)
+            {
+                pin.SetAmountStates(amount);
             }
         }
 

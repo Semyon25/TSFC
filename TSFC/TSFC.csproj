@@ -72,6 +72,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BoolToBoolConverter.cs" />
+    <Compile Include="VectorStates.cs" />
     <Compile Include="Windows\LogicTableWindow.xaml.cs">
       <DependentUpon>LogicTableWindow.xaml</DependentUpon>
     </Compile>

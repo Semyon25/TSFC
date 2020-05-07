@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace TSFC.Model
@@ -13,9 +15,12 @@ namespace TSFC.Model
         Regex[] regices = new Regex[] { new Regex("VCC"),       new Regex("GND"),
                                         new Regex("A\\d{1,2}"), new Regex("D\\d{1,2}") };
         private string name;
+        List<string> states = new List<string>();
         private string workState;
         private string noWorkState;
 
+
+        public static int AmountStates { get; set; }
         public int Number { get; set; }
         public string Name
         {
@@ -33,6 +38,11 @@ namespace TSFC.Model
             set { SetState(value, false); }
         }
         public TypePin Type { get; set; }
+        public List<string> States 
+        { 
+            get => states; 
+            set => states = value; 
+        }
 
         public Pin()
         {
@@ -45,6 +55,16 @@ namespace TSFC.Model
         public Pin(int number)
         {
             Number = number;
+        }
+
+        public void SetAmountStates(int amount)
+        {
+            States = new List<string>();
+            for (int i = 0; i < amount; i++)
+            {
+                States.Add("");
+            }
+            AmountStates = amount;
         }
 
         public void SetName(string name)
