@@ -77,14 +77,15 @@ namespace TSFC.Model
             return bytes;
         }
 
-        public string GenerateTestSequence()
+        public string GenerateTestSequence(int amount)
         {
             const char devider = ' ';
             const string startString = "FC 1 TS1 ";
+            int amountAddresses = amount == 0 ? Table.Lines.Count : amount;
             List<string> codes = new List<string>();
             var isNoWorkingStateAvailable = Pins.Where(p => (p.Type == Pin.TypePin.SPEC && p.NoWorkState != p.WorkState)).Count() > 0;
 
-            for (int i = 0; i < Table.Lines.Count; i++)
+            for (int i = 0; i < amountAddresses; i++)
             {
                 string code = startString;
                 foreach (var pin in Pins)

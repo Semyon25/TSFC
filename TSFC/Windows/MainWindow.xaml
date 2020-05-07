@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TSFC" 
+        xmlns:local="clr-namespace:TSFC" xmlns:converters="clr-namespace:TSFC.Converters"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="TSFC" Height="650" Width="800" WindowState="Maximized">
@@ -25,6 +25,12 @@
         <Style TargetType="TextBox" >
             <Setter Property="Control.MinWidth" Value="30" />
             <Setter Property="Control.Height" Value="20" />
+            <Setter Property="Control.HorizontalAlignment" Value="Center" />
+            <Setter Property="Control.FontSize" Value="12" />
+            <Setter Property="Control.Margin" Value="5" />
+        </Style>
+        <Style TargetType="CheckBox" >
+            <Setter Property="Control.VerticalAlignment" Value="Center" />
             <Setter Property="Control.HorizontalAlignment" Value="Center" />
             <Setter Property="Control.FontSize" Value="12" />
             <Setter Property="Control.Margin" Value="5" />
@@ -121,11 +127,19 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel>
+                        <StackPanel.Resources>
+                            <converters:BoolToBoolConverter x:Key="BoolToBool"/>
+                        </StackPanel.Resources>
                         <WrapPanel>
                             <Button Content="Выбрать бинарник" Command="{Binding ChooseBinaryFile_Button}" />
                             <TextBlock Text="{Binding PathBinaryFile}" />
                         </WrapPanel>
-                        <Button Content="Сгенерировать" Command="{Binding GenerateCode_Button}" HorizontalAlignment="Left" />
+                        <WrapPanel>
+                            <Button Content="Сгенерировать" Command="{Binding GenerateCode_Button}" HorizontalAlignment="Left" />
+                            <CheckBox x:Name="checkBox" Content="Всё?" IsChecked="{Binding IsGenerateAll}" />
+                            <TextBox IsEnabled="{Binding ElementName=checkBox, Path=IsChecked, Converter={StaticResource BoolToBool}}" 
+                                     Text="{Binding AmountAddresses}" />
+                        </WrapPanel>
                     </StackPanel>
 
                     <StackPanel Grid.Row="1">

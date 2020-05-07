@@ -66,6 +66,11 @@ namespace TSFC.ViewModel
 
         public string TestSequence => model.TestSequence;
 
+        public bool IsGenerateAll { get; set; } = true;
+        public int AmountAddresses { get; set; }
+
+
+
         public MainViewModel()
         {
             model = MainModel.Model;
@@ -137,7 +142,7 @@ namespace TSFC.ViewModel
             {
                 model.LoadBinaryFile(PathBinaryFile);
 
-                model.GenerateTestSequence();
+                model.GenerateTestSequence(IsGenerateAll? 0 : AmountAddresses);
 
                 RaisePropertyChanged(nameof(TestSequence));
                 RaisePropertyChanged(nameof(LogicTable));
