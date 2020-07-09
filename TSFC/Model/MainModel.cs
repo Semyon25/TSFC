@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -42,6 +43,38 @@ namespace TSFC.Model
         {
 
         }
+
+        public void ConvertToBinaryDigitalsFile()
+        {
+            byte[] bytes = ReadFile(PathBinaryFile);
+            if (!Directory.Exists("BinDigitals"))
+            {
+                Directory.CreateDirectory("BinDigitals");
+            }
+            using (StreamWriter sw = new StreamWriter($"BinDigitals/{Path.GetFileNameWithoutExtension(PathBinaryFile)}.txt", false, System.Text.Encoding.Default))
+            {
+                sw.WriteLine("№\tD7 D6 D5 D4 D3 D2 D1 D0 HEX");
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    string binNum = Convert.ToString(bytes[i], 2);
+                    string result = $"{i.ToString()}\t";
+                    for (int j = 0; j < 8-binNum.Length; j++)
+                    {
+                        result += "0  ";
+                    }
+                    for (int j = 0; j < binNum.Length; j++)
+                    {
+                        char binChar = binNum[j];
+                        result += binChar + "  ";
+                    }
+                    result += $"0x{bytes[i]:X2}";
+                    sw.WriteLine(result);
+                }
+            }
+            Process.Start("BinDigitals");
+        }
+
+
 
         public void CheckChip()
         {

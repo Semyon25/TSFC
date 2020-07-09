@@ -154,6 +154,7 @@
                             <CheckBox x:Name="checkBox" Content="Всё?" IsChecked="{Binding IsGenerateAll}" />
                             <TextBox IsEnabled="{Binding ElementName=checkBox, Path=IsChecked, Converter={StaticResource BoolToBool}}" 
                                      Text="{Binding AmountAddresses}" />
+                            <Button Content="В двоичный код" Command="{Binding BinaryDigitals_Button}" HorizontalAlignment="Left" />
                         </WrapPanel>
                     </StackPanel>
 

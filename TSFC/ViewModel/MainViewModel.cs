@@ -75,7 +75,20 @@ namespace TSFC.ViewModel
             SaveTestSequenceInFile_Button = new RelayCommand(SaveTestSequenceInFile);
             OpenLogicTableWindow_Button = new RelayCommand(OpenLogicTableWindow);
             Ready_Button = new RelayCommand(Ready);
+            BinaryDigitals_Button = new RelayCommand(BinaryDigitals);
             RaisePropertyChanged(nameof(LogicTable));
+        }
+
+        private void BinaryDigitals()
+        {
+            try
+            {
+                model.ConvertToBinaryDigitalsFile();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Ready()
@@ -280,7 +293,7 @@ namespace TSFC.ViewModel
         public ICommand SaveTestSequenceInFile_Button { get; private set; }
         public ICommand OpenLogicTableWindow_Button { get; private set; }
         public ICommand Ready_Button { get; private set; }
-
+        public ICommand BinaryDigitals_Button { get; private set; }
         #endregion
 
     }
